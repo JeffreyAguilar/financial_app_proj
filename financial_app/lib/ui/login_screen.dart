@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                  Padding(
-                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 20.0),
+                  padding: const EdgeInsets.fromLTRB(20.0, 0, 0, 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
