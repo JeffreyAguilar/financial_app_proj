@@ -24,10 +24,18 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     await Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 4),
     );
 
     //include if(skipLogin) block (will either lead user to login screen or into the app)
+    if(skipLogin){
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, '/home',);
+    }
+    else{
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamed(context, '/login',);
+    }
   }
 
   @override
@@ -36,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('INSERT BACKGROUND PHOTO HERE'),
+            image: AssetImage('images/flutter.png'),
             fit: BoxFit.cover,
           ),
         ),

@@ -1,3 +1,5 @@
+import 'package:financial_app/ui/login_screen.dart';
+import 'package:financial_app/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'ui/home_page.dart';
 
@@ -11,9 +13,14 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(title: 'Home Page'),
+      home: const SplashScreen(),
+      routes: <String, WidgetBuilder> {
+        '/splash':(BuildContext context) => const SplashScreen(),
+        '/login' :(BuildContext context) => const LoginScreen(),
+        '/home':(BuildContext context) => const HomePage(title: 'Home Page'),
+      },
     );
   }
 }
