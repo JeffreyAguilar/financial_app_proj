@@ -24,17 +24,17 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     await Future.delayed(
-      const Duration(seconds: 4),
+      const Duration(seconds: 3),
     );
 
     //include if(skipLogin) block (will either lead user to login screen or into the app)
     if(skipLogin){
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, '/home',);
+      Navigator.pushReplacementNamed(context, '/home',);
     }
     else{
       // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, '/login',);
+      Navigator.pushReplacementNamed(context, '/login',);
     }
   }
 
