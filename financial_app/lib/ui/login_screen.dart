@@ -1,4 +1,4 @@
-import 'package:financial_app/local_auth.dart';
+import 'package:financial_app/constructors/local_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
