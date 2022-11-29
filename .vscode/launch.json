@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (lib\\ui\\main_page.dart)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "financial_app",
+            "program": "lib\\ui\\main_page.dart"
+        }
+    ]
+}

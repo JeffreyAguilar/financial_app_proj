@@ -12,8 +12,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isChecked = false;
-  String login = '';
-  String password = '';
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -65,9 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                onChanged: (value) {
-                  login = value;
-                },
               ),
             ),
             Container(
@@ -90,9 +85,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                onChanged: (value) {
-                  password = value;
-                },
               ),
             ),
             Padding(
@@ -120,9 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: ElevatedButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 20.0),
               ),
-              onPressed: () async {
-                signIn();
-              },
+              onPressed: signIn,
               child: const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
