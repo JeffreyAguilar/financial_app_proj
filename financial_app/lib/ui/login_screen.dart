@@ -1,4 +1,5 @@
 import 'package:financial_app/constructors/local_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,23 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isChecked = false;
   String login = '';
   String password = '';
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: TextField(
+                controller: _emailController,
                 style: const TextStyle(
                   color: Colors.black,
                 ),
@@ -55,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: TextField(
+                controller: _passwordController,
                 style: const TextStyle(
                   color: Colors.black,
                 ),
@@ -101,33 +121,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 textStyle: const TextStyle(fontSize: 20.0),
               ),
               onPressed: () async {
-                if (localAuth(login: login, password: password)) {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('saveUser', isChecked);
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushNamed(context, '/home');
-                } else {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Error!'),
-                            content: const Text('Incorrect login information!'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: (() =>
-                                    Navigator.pop(context, 'Try Again!')),
-                                child: const Text('Try Again!'),
-                              )
-                            ],
-                          ));
-                }
+                signIn();
               },
               child: const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
                   horizontal: 50.0,
                 ),
-                child: Text('Enter'),
+                child: Text('Sign In'),
               ),
             )
           ],
