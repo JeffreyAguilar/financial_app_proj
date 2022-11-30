@@ -1,10 +1,16 @@
 import 'package:financial_app/constructors/local_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final VoidCallback onClickedSignUp;
+  const LoginScreen({
+    Key? key,
+    required this.onClickedSignUp,
+  }) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -120,7 +126,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Text('Sign In'),
               ),
-            )
+            ),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(color: Colors.white, fontSize: 20),
+                text: 'Create Account',
+                children: [
+                  TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = widget.onClickedSignUp,
+                    text: 'Sign Up',
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
