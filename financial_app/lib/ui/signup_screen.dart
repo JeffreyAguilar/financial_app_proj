@@ -4,28 +4,32 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  final VoidCallback onClickedSignUp;
-  const LoginScreen({
+class SignUpScreen extends StatefulWidget {
+  final VoidCallback onClickedSignIn;
+  const SignUpScreen({
     Key? key,
-    required this.onClickedSignUp,
+    required this.onClickedSignIn,
   }) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool isChecked = false;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
+  Future signUp() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -117,24 +121,24 @@ class _LoginScreenState extends State<LoginScreen> {
               style: ElevatedButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 20.0),
               ),
-              onPressed: signIn,
+              onPressed: signUp,
               child: const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
                   horizontal: 50.0,
                 ),
-                child: Text('Sign In'),
+                child: Text('Sign Up'),
               ),
             ),
             RichText(
               text: TextSpan(
                 style: TextStyle(color: Colors.black, fontSize: 20),
-                text: 'Create Account ',
+                text: 'Already Have Account? ',
                 children: [
                   TextSpan(
                     recognizer: TapGestureRecognizer()
-                      ..onTap = widget.onClickedSignUp,
-                    text: 'Sign Up',
+                      ..onTap = widget.onClickedSignIn,
+                    text: 'Log In',
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         color: Theme.of(context).colorScheme.secondary),

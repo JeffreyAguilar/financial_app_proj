@@ -1,3 +1,4 @@
+import 'package:financial_app/ui/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/login_screen.dart';
 import 'package:financial_app/ui/home_page.dart';
@@ -15,7 +16,7 @@ class MainPage extends StatelessWidget {
             if (snapshot.hasData) {
               return HomePage();
             } else {
-              return LoginScreen();
+              return AuthPage();
             }
           }),
     );
