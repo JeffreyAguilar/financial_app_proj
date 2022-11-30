@@ -1,6 +1,5 @@
 import 'package:financial_app/ui/login_screen.dart';
 import 'package:financial_app/ui/main_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/main_page.dart';
 import 'ui/home_page.dart';
