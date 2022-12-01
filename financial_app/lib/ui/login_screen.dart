@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: 'login',
+                  hintText: 'Email',
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: 'password',
+                  hintText: 'Password',
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(

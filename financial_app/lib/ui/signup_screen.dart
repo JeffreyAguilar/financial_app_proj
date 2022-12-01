@@ -1,4 +1,5 @@
 import 'package:financial_app/constructors/local_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -18,8 +19,11 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isChecked = false;
 
+  String parent = 'parent';
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
 
   Future signUp() async {
     try {
@@ -30,12 +34,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } on FirebaseAuthException catch (e) {
       print(e);
     }
+
+    addUserDetails(
+      _firstNameController.text.trim(),
+      _lastNameController.text.trim(),
+      _emailController.text.trim(),
+      parent,
+    );
+  }
+
+  Future addUserDetails(
+      String firstName, String lastName, String email, String parent) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'first name': firstName,
+      'last name': lastName,
+      'email': email,
+      'parent': parent,
+    });
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
@@ -58,6 +81,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: TextField(
+                controller: _firstNameController,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'First Name',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: TextField(
+                controller: _lastNameController,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'Last Name',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: TextField(
                 controller: _emailController,
                 style: const TextStyle(
                   color: Colors.black,
@@ -65,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: 'login',
+                  hintText: 'Email',
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -85,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  hintText: 'password',
+                  hintText: 'Password',
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
@@ -95,27 +162,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 0, 20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'Remember Me',
-                      style: TextStyle(fontSize: 15.0),
-                    ),
-                    Checkbox(
-                      checkColor: Colors.white,
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                  ]),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(

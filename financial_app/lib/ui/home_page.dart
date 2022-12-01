@@ -93,30 +93,6 @@ class _AccountColumnState extends State<AccountColumn> {
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 100.0, vertical: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: const Text(
-                        'Account 2: ',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 100.0, vertical: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: const Text(
-                        'Account 3:',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
                   ],
                 )
               ],
