@@ -5,21 +5,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class SignUpScreen extends StatefulWidget {
+class ChildSignUpScreen extends StatefulWidget {
   final VoidCallback onClickedSignIn;
-  const SignUpScreen({
+  const ChildSignUpScreen({
     Key? key,
     required this.onClickedSignIn,
   }) : super(key: key);
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<ChildSignUpScreen> createState() => _ChildSignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
   bool isChecked = false;
 
-  String parent = 'parent';
+  String child = 'child';
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _firstNameController = TextEditingController();
@@ -39,19 +39,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _firstNameController.text.trim(),
       _lastNameController.text.trim(),
       _emailController.text.trim(),
-      parent,
-      FirebaseAuth.instance.currentUser!.uid,
+      child,
     );
   }
 
-  Future addUserDetails(String firstName, String lastName, String email,
-      String parent, String id) async {
+  Future addUserDetails(
+      String firstName, String lastName, String email, String parent) async {
     await FirebaseFirestore.instance.collection('users').add({
       'first name': firstName,
       'last name': lastName,
       'email': email,
       'parent': parent,
-      'id': id,
     });
   }
 

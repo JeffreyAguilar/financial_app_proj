@@ -1,18 +1,18 @@
 import 'package:financial_app/ui/child_acc_info.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class ChildHomePage extends StatefulWidget {
   final VoidCallback onClickedSignUp;
-  const HomePage({
+  const ChildHomePage({
     Key? key,
     required this.onClickedSignUp,
   }) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ChildHomePage> createState() => _ChildHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ChildHomePageState extends State<ChildHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
