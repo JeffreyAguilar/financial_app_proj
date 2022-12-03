@@ -19,14 +19,18 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isChecked = false;
-  List<String> docList = [];
   CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
   String parent = 'parent';
+  late String documentID;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+
+  String getDocID() {
+    return documentID;
+  }
 
   Future signUp() async {
     try {
@@ -41,6 +45,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('users');
     String docId = collectionReference.doc().id;
+
+    docId = documentID;
 
     addUserDetails(
       _firstNameController.text.trim(),

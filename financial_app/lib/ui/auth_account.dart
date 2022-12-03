@@ -15,9 +15,8 @@ class _AuthAccountPage extends State<AuthAccountPage> {
   bool isLogin = true;
 
   @override
-  Widget build(BuildContext context) => isLogin
-      ? HomePage(onClickedSignUp: toggle)
-      : SignUpScreen(onClickedSignIn: toggle);
+  Widget build(BuildContext context) =>
+      isLogin ? HomePage() : SignUpScreen(onClickedSignIn: toggle);
 
   void toggle() => setState(() => isLogin = !isLogin);
 }
