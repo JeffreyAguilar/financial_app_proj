@@ -19,6 +19,8 @@ class ChildSignUpScreen extends StatefulWidget {
 class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
   bool isChecked = false;
 
+  CollectionReference collectionReference =
+      FirebaseFirestore.instance.collection('users');
   String child = 'child';
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -35,21 +37,29 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
       print(e);
     }
 
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('users');
+    String docId = collectionReference.doc().id;
+
     addUserDetails(
-      _firstNameController.text.trim(),
-      _lastNameController.text.trim(),
-      _emailController.text.trim(),
-      child,
-    );
+        _firstNameController.text.trim(),
+        _lastNameController.text.trim(),
+        _emailController.text.trim(),
+        child,
+        FirebaseAuth.instance.currentUser!.uid,
+        docId);
   }
 
-  Future addUserDetails(
-      String firstName, String lastName, String email, String parent) async {
+  Future addUserDetails(String firstName, String lastName, String email,
+      String parent, String id, String docID) async {
+    String docId = collectionReference.doc().id;
     await FirebaseFirestore.instance.collection('users').add({
       'first name': firstName,
       'last name': lastName,
       'email': email,
       'parent': parent,
+      'id': id,
+      'doc id': docId,
     });
   }
 
@@ -174,22 +184,6 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
                   horizontal: 50.0,
                 ),
                 child: Text('Sign Up'),
-              ),
-            ),
-            RichText(
-              text: TextSpan(
-                style: TextStyle(color: Colors.black, fontSize: 20),
-                text: 'Already Have Account? ',
-                children: [
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = widget.onClickedSignIn,
-                    text: 'Log In',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ],
               ),
             ),
           ],
