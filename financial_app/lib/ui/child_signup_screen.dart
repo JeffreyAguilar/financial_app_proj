@@ -4,12 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 
 class ChildSignUpScreen extends StatefulWidget {
-  final VoidCallback onClickedSignIn;
   const ChildSignUpScreen({
     Key? key,
-    required this.onClickedSignIn,
   }) : super(key: key);
 
   @override
@@ -21,7 +20,6 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
 
   CollectionReference collectionReference =
       FirebaseFirestore.instance.collection('users');
-  String child = 'child';
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _firstNameController = TextEditingController();
@@ -37,30 +35,35 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
       print(e);
     }
 
-    CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('users');
     String docId = collectionReference.doc().id;
 
     addUserDetails(
-        _firstNameController.text.trim(),
-        _lastNameController.text.trim(),
-        _emailController.text.trim(),
-        child,
-        FirebaseAuth.instance.currentUser!.uid,
-        docId);
+      _firstNameController.text.trim(),
+      _lastNameController.text.trim(),
+      _emailController.text.trim(),
+      'child',
+      FirebaseAuth.instance.currentUser!.uid,
+      docId,
+    );
   }
 
   Future addUserDetails(String firstName, String lastName, String email,
-      String parent, String id, String docID) async {
-    String docId = collectionReference.doc().id;
-    await FirebaseFirestore.instance.collection('users').add({
+      String child, String id, String docId) async {
+    await collectionReference.doc(docId).set({
       'first name': firstName,
       'last name': lastName,
       'email': email,
-      'parent': parent,
+      'status': child,
       'id': id,
       'doc id': docId,
     });
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final String pid = FirebaseFirestore.instance.collection('users').id;
+    debugPrint('id being printed ' + docId);
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(pid)
+        .update({'children': docId});
   }
 
   @override
@@ -177,7 +180,12 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
               style: ElevatedButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 20.0),
               ),
-              onPressed: signUp,
+              onPressed: () {
+                signUp();
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const HomePage();
+                }));
+              },
               child: const Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,

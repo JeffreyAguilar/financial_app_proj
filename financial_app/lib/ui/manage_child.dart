@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:financial_app/ui/child_signup_screen.dart';
 
 class ManagePage extends StatefulWidget {
   const ManagePage({super.key});
@@ -37,23 +38,34 @@ class _ManagePageState extends State<ManagePage> {
               children: <Widget>[
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: () {},
-                  child: const Text('Add Child', style: TextStyle(fontSize: 24),),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChildSignUpScreen()));
+                  },
+                  child: const Text(
+                    'Add Child',
+                    style: TextStyle(fontSize: 24),
+                  ),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   onPressed: () {},
-                  child: const Text('Remove Child', style: TextStyle(fontSize: 24)),
+                  child: const Text('Remove Child',
+                      style: TextStyle(fontSize: 24)),
                 )
               ],
             ),

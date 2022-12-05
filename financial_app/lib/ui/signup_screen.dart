@@ -28,10 +28,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
-  String getDocID() {
-    return documentID;
-  }
-
   Future signUp() async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -42,32 +38,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
       print(e);
     }
 
-    CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('users');
-    String docId = collectionReference.doc().id;
-
-    docId = documentID;
-
     addUserDetails(
       _firstNameController.text.trim(),
       _lastNameController.text.trim(),
       _emailController.text.trim(),
       parent,
       FirebaseAuth.instance.currentUser!.uid,
-      docId,
+      FirebaseFirestore.instance.collection('users').id,
     );
   }
 
   Future addUserDetails(String firstName, String lastName, String email,
       String parent, String id, String docID) async {
-    String docId = collectionReference.doc().id;
-    await collectionReference.doc(docId).set({
+    await collectionReference.doc(docID).set({
       'first name': firstName,
       'last name': lastName,
       'email': email,
-      'parent': parent,
+      'state': parent,
       'id': id,
-      'doc id': docId,
+      'doc id': docID,
     });
   }
 

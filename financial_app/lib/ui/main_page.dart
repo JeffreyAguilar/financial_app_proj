@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/ui/auth_page.dart';
-import 'package:financial_app/ui/auth_account.dart';
+import 'package:financial_app/ui/child_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/login_screen.dart';
 import 'package:financial_app/ui/home_page.dart';
@@ -15,7 +16,7 @@ class MainPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return AuthAccountPage();
+              return HomePage();
             } else {
               return AuthPage();
             }
