@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static String id = FirebaseFirestore.instance.collection('users').id;
   List<String> children = ['John', 'Jane', 'Joe'];
   String accounts =
       '\'s Balance: \n Planned Expenses Per Month: \n Planned Income Per Month: \n Planned Income Over A Period: ';
@@ -35,7 +34,10 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  debugPrint('id being printed ' + id);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const AccountPage();
+                  }));
+                  ;
                 },
               ),
               const Text('Home Page'),
