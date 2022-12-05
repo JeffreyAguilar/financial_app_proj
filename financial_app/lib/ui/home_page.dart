@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/account_page.dart';
 import 'package:financial_app/ui/manage_child.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,10 +12,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static String id = FirebaseFirestore.instance.collection('users').id;
   List<String> children = ['John', 'Jane', 'Joe'];
-  String accounts = '\'s Balance: \n Planned Expenses Per Month: \n Planned Income Per Month: \n Planned Income Over A Period: ';
+  String accounts =
+      '\'s Balance: \n Planned Expenses Per Month: \n Planned Income Per Month: \n Planned Income Over A Period: ';
   String balance = '\$1000\n';
-  String plannedExpenses = '\$200\n'; 
+  String plannedExpenses = '\$200\n';
   String plannedIncomePerMonth = '\$250\n';
   String plannedIncomePeriod = '\$300\n';
 
@@ -31,9 +35,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AccountPage();
-                  }));
+                  debugPrint('id being printed ' + id);
                 },
               ),
               const Text('Home Page'),
@@ -73,7 +75,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: ListTile(
                   title: Text(children[index] + accounts),
-                  trailing: Text(plannedExpenses + plannedIncomePerMonth + plannedIncomePeriod),
+                  trailing: Text(plannedExpenses +
+                      plannedIncomePerMonth +
+                      plannedIncomePeriod),
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(width: 2),
                     borderRadius: BorderRadius.circular(20),
