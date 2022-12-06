@@ -40,6 +40,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future removeChild(
+    String childid,
+  ) async {
+    debugPrint('i am ' + childid);
+    await FirebaseFirestore.instance.collection('users').doc(id).update({
+      'children': FieldValue.arrayRemove([childid])
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     setInfo();
                     addChild(_firstNameController.text.trim());
-                    debugPrint('i am ' + children[1].toString());
+                    debugPrint('i am ' + children[0].toString());
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -117,6 +126,21 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   child: const Text('Add Child'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setInfo();
+                    removeChild(_firstNameController.text.trim());
+                    debugPrint('i am ' + children[1].toString());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text('Remove Child'),
                 ),
                 TextField(
                   controller: _firstNameController,
