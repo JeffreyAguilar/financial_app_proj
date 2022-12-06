@@ -18,8 +18,6 @@ class ChildSignUpScreen extends StatefulWidget {
 class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
   bool isChecked = false;
 
-  CollectionReference collectionReference =
-      FirebaseFirestore.instance.collection('users');
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _firstNameController = TextEditingController();
@@ -35,35 +33,31 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
       print(e);
     }
 
-    String docId = collectionReference.doc().id;
-
     addUserDetails(
       _firstNameController.text.trim(),
       _lastNameController.text.trim(),
       _emailController.text.trim(),
       'child',
       FirebaseAuth.instance.currentUser!.uid,
-      docId,
     );
   }
 
   Future addUserDetails(String firstName, String lastName, String email,
-      String child, String id, String docId) async {
-    await collectionReference.doc(docId).set({
+      String child, String id) async {
+    await FirebaseFirestore.instance
+        .collection('children')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .set({
       'first name': firstName,
       'last name': lastName,
       'email': email,
       'status': child,
       'id': id,
-      'doc id': docId,
     });
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final String pid = FirebaseFirestore.instance.collection('users').id;
-    debugPrint('id being printed ' + docId);
     FirebaseFirestore.instance
         .collection('users')
-        .doc(pid)
-        .update({'children': docId});
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .update({'children': id});
   }
 
   @override
