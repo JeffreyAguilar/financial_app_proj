@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   late String firstName;
   late String id;
   late String lastName;
+  final _firstNameController = TextEditingController();
 
   Future setInfo() async {
     DocumentSnapshot data = await FirebaseFirestore.instance
@@ -27,12 +28,13 @@ class _HomePageState extends State<HomePage> {
     firstName = data.get('first name');
     lastName = data.get('last name');
     id = FirebaseAuth.instance.currentUser!.uid;
+    children = List.from(data['children']);
   }
 
   Future addChild(
     String childid,
   ) async {
-    debugPrint('i am the' + id);
+    debugPrint('i am ' + childid);
     await FirebaseFirestore.instance.collection('users').doc(id).update({
       'children': FieldValue.arrayUnion([childid])
     });
@@ -53,8 +55,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () {
                   setInfo();
-                  addChild('test');
-                  debugPrint('i am ' + id);
                 },
               ),
               ElevatedButton(
@@ -95,6 +95,49 @@ class _HomePageState extends State<HomePage> {
               Color.fromARGB(255, 3, 166, 8),
               Color.fromARGB(255, 94, 238, 168),
             ],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    setInfo();
+                    addChild(_firstNameController.text.trim());
+                    debugPrint('i am ' + children[1].toString());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text('Add Child'),
+                ),
+                TextField(
+                  controller: _firstNameController,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: 'Child Name',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

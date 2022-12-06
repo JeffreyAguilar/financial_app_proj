@@ -14,9 +14,20 @@ class ChildHomePage extends StatefulWidget {
 }
 
 class _ChildHomePageState extends State<ChildHomePage> {
-
-  List<String> userInfo = ['Name: ', 'Balance: ', 'Income Per Month: ', 'Expenses Per Month: ', 'Income Over A Period of Time: '];
-  List<String> accountInfo = ['John Doe','\$1000', '\$1000', '\$1000', '\$1000'];
+  List<String> userInfo = [
+    'Name: ',
+    'Balance: ',
+    'Income Per Month: ',
+    'Expenses Per Month: ',
+    'Income Over A Period of Time: '
+  ];
+  List<String> accountInfo = [
+    'John Doe',
+    '\$1000',
+    '\$1000',
+    '\$1000',
+    '\$1000'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +67,7 @@ class _ChildHomePageState extends State<ChildHomePage> {
         child: SafeArea(
           child: ListView.separated(
             itemCount: userInfo.length,
-            itemBuilder: (BuildContext context, int index){
+            itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: ListTile(
                   title: Text(userInfo[index]),
@@ -64,7 +75,8 @@ class _ChildHomePageState extends State<ChildHomePage> {
                 ),
               );
             },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
           ),
         ),
       ),
