@@ -42,11 +42,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _emailController.text.trim(),
       parent,
       FirebaseAuth.instance.currentUser!.uid,
+      [],
     );
   }
 
   Future addUserDetails(String firstName, String lastName, String email,
-      String parent, String id) async {
+      String parent, String id, List children) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -56,6 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'email': email,
       'state': parent,
       'id': id,
+      'children': children,
     });
   }
 

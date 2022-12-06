@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:financial_app/ui/home_page.dart';
 import 'package:financial_app/ui/main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,25 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  String firstName = '';
+  String id = '';
+  String lastName = '';
+  String email = '';
+
+  Future setInfo() async {
+    DocumentSnapshot data = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get();
+    String firstName = data.get('first name');
+    String lastName = data.get('last name');
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    String? email = FirebaseAuth.instance.currentUser!.email;
+  }
+
   @override
   Widget build(BuildContext context) {
+    setInfo();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 3, 166, 8),
@@ -35,7 +53,18 @@ class _AccountPageState extends State<AccountPage> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  buildName(),
+                  Text(
+                    firstName,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                        color: Colors.white),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    email,
+                    style: TextStyle(color: Colors.black),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
@@ -52,24 +81,22 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ),
                     child: const Text('Sign Out'),
-                  )
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      debugPrint('email is ' + email);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text('Sign Out'),
+                  ),
                 ]),
           ),
         ));
   }
 }
-
-Widget buildName() => Column(
-      children: const [
-        Text(
-          'bob',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
-        ),
-        SizedBox(height: 4),
-        Text(
-          'Email',
-          style: TextStyle(color: Colors.black),
-        )
-      ],
-    );

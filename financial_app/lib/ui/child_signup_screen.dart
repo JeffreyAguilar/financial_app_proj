@@ -16,6 +16,23 @@ class ChildSignUpScreen extends StatefulWidget {
 }
 
 class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
+  late String firstName;
+  late String id;
+  late String lastName;
+  late String cid;
+
+  Future setInfo() async {
+    DocumentSnapshot data = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get();
+    firstName = data.get('first name');
+    lastName = data.get('last name');
+    id = FirebaseAuth.instance.currentUser!.uid;
+  }
+
+  Future getInfo() async {}
+
   bool isChecked = false;
 
   final _emailController = TextEditingController();
@@ -38,12 +55,28 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
       _lastNameController.text.trim(),
       _emailController.text.trim(),
       'child',
-      FirebaseAuth.instance.currentUser!.uid,
+      cid = FirebaseAuth.instance.currentUser!.uid,
     );
+
+    addChild(cid);
   }
 
-  Future addUserDetails(String firstName, String lastName, String email,
-      String child, String id) async {
+  Future addChild(
+    String childid,
+  ) async {
+    debugPrint('i am the' + id);
+    await FirebaseFirestore.instance.collection('users').doc(id).update({
+      'children': FieldValue.arrayUnion([childid])
+    });
+  }
+
+  Future addUserDetails(
+    String firstName,
+    String lastName,
+    String email,
+    String child,
+    String cid,
+  ) async {
     await FirebaseFirestore.instance
         .collection('children')
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -52,12 +85,8 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
       'last name': lastName,
       'email': email,
       'status': child,
-      'id': id,
+      'id': cid,
     });
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .update({'children': id});
   }
 
   @override
@@ -176,6 +205,7 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
               ),
               onPressed: () {
                 signUp();
+                debugPrint('i am ' + cid);
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const HomePage();
                 }));
@@ -186,6 +216,21 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
                   horizontal: 50.0,
                 ),
                 child: Text('Sign Up'),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20.0),
+              ),
+              onPressed: () {
+                setInfo();
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 50.0,
+                ),
+                child: Text('test'),
               ),
             ),
           ],
