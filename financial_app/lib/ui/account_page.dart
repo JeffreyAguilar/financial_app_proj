@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:financial_app/ui/main_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/main.dart';
+import 'login_screen.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -34,7 +36,23 @@ class _AccountPageState extends State<AccountPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   buildName(),
-                  buildSignout(),
+                  ElevatedButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const MainPage();
+                      }));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text('Sign Out'),
+                  )
                 ]),
           ),
         ));
@@ -44,7 +62,7 @@ class _AccountPageState extends State<AccountPage> {
 Widget buildName() => Column(
       children: const [
         Text(
-          'Name',
+          'bob',
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
         ),
@@ -54,15 +72,4 @@ Widget buildName() => Column(
           style: TextStyle(color: Colors.black),
         )
       ],
-    );
-
-Widget buildSignout() => ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      child: const Text('Sign Out'),
     );
