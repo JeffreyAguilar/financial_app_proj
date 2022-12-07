@@ -15,54 +15,55 @@ class _selectionPageState extends State<selectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromARGB(255, 3, 166, 8),
-              Color.fromARGB(255, 94, 238, 168)
-            ],
-          ),
-        ),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            textStyle: const TextStyle(fontSize: 20.0),
-          ),
-          onPressed: (() {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const HomePage();
-            }));
-          }),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 50.0,
-            ),
-            child: Text('Sign In As Parent'),
-          ),
-        ),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            textStyle: const TextStyle(fontSize: 20.0),
-          ),
-          onPressed: (() {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const ChildHomePage();
-            }));
-          }),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 50.0,
-            ),
-            child: Text('Sign In As Parent'),
-          ),
+        body: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/gradient.png'),
+          fit: BoxFit.cover,
         ),
       ),
-    );
+      constraints: const BoxConstraints.expand(),
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20.0),
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const HomePage();
+                }));
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 50.0,
+                ),
+                child: Text('Sign In'),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20.0),
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const ChildHomePage();
+                }));
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 50.0,
+                ),
+                child: Text('Sign In As Child'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 }
-
-class FirebaseAuth {}
