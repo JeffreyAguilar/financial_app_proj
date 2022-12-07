@@ -66,13 +66,6 @@ class _HomePageState extends State<HomePage> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(
-                icon: const Icon(
-                  Icons.account_circle_sharp,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
               ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
@@ -89,13 +82,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: const Text('Sign Out'),
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              )
             ],
           )),
       body: Container(

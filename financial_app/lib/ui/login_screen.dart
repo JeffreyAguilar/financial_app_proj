@@ -127,19 +127,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Text('Sign In'),
               ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20.0),
-              ),
-              onPressed: signIn,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 50.0,
-                ),
-                child: Text('Sign In As Child'),
-              ),
-            ),
             RichText(
               text: TextSpan(
                 style: TextStyle(color: Colors.black, fontSize: 20),
