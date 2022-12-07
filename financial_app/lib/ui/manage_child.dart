@@ -61,7 +61,6 @@ class _ManagePageState extends State<ManagePage> {
     income = data.get('income');
     childLastName = data.get('last name');
     status = data.get('status');
-
   }
 
   Future upadteChildInfo() async {
@@ -71,7 +70,6 @@ class _ManagePageState extends State<ManagePage> {
       'chore': chores,
       'income': income,
     });
-
   }
 
   void _countdown() {
@@ -182,7 +180,6 @@ class _ManagePageState extends State<ManagePage> {
                     chores = _choresController.text.trim();
                     income = double.tryParse(_incomeController.text.trim())!;
                     balance = double.tryParse(_balanceController.text.trim())!;
-                    debugPrint('i am working ok ' + globals.temp + lastName);
 
                     upadteChildInfo();
                   },

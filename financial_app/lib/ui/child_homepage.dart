@@ -62,9 +62,9 @@ class _ChildHomePageState extends State<ChildHomePage> {
   }
 
   Future spendingMoney() async {
-    if (balance - expenses <= 100) {
+    if (balance - expenses <= 0) {
       money = ('YOU HAVE NO MUHNI, do not spend money that you do not have!');
-    } else if (balance - expenses <= 100) {
+    } else if (balance - expenses <= 100 && balance - expenses > 0) {
       money =
           ('You need to spend less MUHNI and Try to save more. You should ' +
               chores);
@@ -80,8 +80,8 @@ class _ChildHomePageState extends State<ChildHomePage> {
   void _countdown() {
     Timer.periodic(Duration(seconds: 5), (timer) {
       setState(() {
-        spendingMoney();
         setChildInfo();
+        spendingMoney();
       });
     });
   }
@@ -151,14 +151,14 @@ class _ChildHomePageState extends State<ChildHomePage> {
                   child: Text(
                       'Income (How much MUHNI you get): ' + income.toString()),
                 ),
-                Text('To get this MUHNEY you have to, ' + chores),
+                Text('To get this MUHNI you have to, ' + chores),
                 Container(
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
                   ),
-                  child: Text('MUHNEY Spent: ' + expenses.toString()),
+                  child: Text('MUHNI Spent: ' + expenses.toString()),
                 ),
                 Text(money),
                 Container(
