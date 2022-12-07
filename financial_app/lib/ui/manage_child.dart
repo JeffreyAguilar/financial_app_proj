@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/child_signup_screen.dart';
-
+import 'package:financial_app/global.dart' as globals;
 import 'home_page.dart' as home;
 
 class ManagePage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _ManagePageState extends State<ManagePage> {
     debugPrint('i am working adult');
   }
 
-  late double income;
+  late double? income;
   late double balance;
   late double expenses;
   late String chores;
@@ -126,6 +126,7 @@ class _ManagePageState extends State<ManagePage> {
                     ),
                   ),
                 ),
+                Text('Current Chore: ' + chores.toString()),
                 TextField(
                   keyboardType: TextInputType.number,
                   controller: _incomeController,
@@ -145,6 +146,7 @@ class _ManagePageState extends State<ManagePage> {
                     ),
                   ),
                 ),
+                Text('Current Income: ' + income.toString()),
                 TextField(
                   keyboardType: TextInputType.number,
                   controller: _balanceController,
@@ -164,6 +166,7 @@ class _ManagePageState extends State<ManagePage> {
                     ),
                   ),
                 ),
+                Text('Current Balance: ' + balance.toString()),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
@@ -174,8 +177,8 @@ class _ManagePageState extends State<ManagePage> {
                   ),
                   onPressed: () {
                     chores = _choresController.text.trim();
-                    income = 25;
-                    balance = 300;
+                    income = double.tryParse(_incomeController.text.trim())!;
+                    balance = double.tryParse(_balanceController.text.trim())!;
                     upadteChildInfo();
 
                     //debugPrint(
@@ -183,7 +186,6 @@ class _ManagePageState extends State<ManagePage> {
                   },
                   child: const Text('Update', style: TextStyle(fontSize: 24)),
                 ),
-                Text('Current Balance: '),
               ],
             ),
           ),

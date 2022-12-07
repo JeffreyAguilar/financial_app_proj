@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'child_homepage.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback onClickedSignUp;
@@ -124,6 +125,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   horizontal: 50.0,
                 ),
                 child: Text('Sign In'),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20.0),
+              ),
+              onPressed: signIn,
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 50.0,
+                ),
+                child: Text('Sign In As Child'),
               ),
             ),
             RichText(

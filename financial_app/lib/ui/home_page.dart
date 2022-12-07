@@ -5,6 +5,7 @@ import 'package:financial_app/ui/manage_child.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main_page.dart';
+import 'package:financial_app/global.dart' as globals;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
