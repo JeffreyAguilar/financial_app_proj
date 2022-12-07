@@ -23,15 +23,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String documentID;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
+
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
   Future signUp() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      if (_passwordController.text.trim() ==
+          _confirmpasswordController.text.trim()) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
     }
@@ -67,6 +72,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _confirmpasswordController.dispose();
+
     super.dispose();
   }
 
@@ -76,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/flutter.png'),
+          image: AssetImage('images/gradient.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -161,6 +168,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   filled: true,
                   fillColor: Colors.white,
                   hintText: 'Password',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: TextField(
+                controller: _confirmpasswordController,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'Confirm Password',
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(

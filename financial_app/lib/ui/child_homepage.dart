@@ -1,9 +1,12 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/ui/child_account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/child_homepage.dart';
-
+import 'package:financial_app/global.dart' as globals;
 import 'child_signup_screen.dart';
 import 'home_page.dart';
 import 'main_page.dart';
@@ -19,64 +22,80 @@ class ChildHomePage extends StatefulWidget {
 }
 
 class _ChildHomePageState extends State<ChildHomePage> {
-  List<String> children = [];
-  late String firstName;
-  late String id;
-  late String lastName;
-  final _firstNameController = TextEditingController();
+  double income = 0;
+  double balance = 0;
+  double expenses = 0;
+  String chores = '';
+  String email = '';
+  String childFirstName = '';
+  String childLastName = '';
+  String cid = '';
+  String status = '';
 
-  Future setInfo() async {
+  final _expenseController = TextEditingController();
+
+  late String money;
+
+  Future setChildInfo() async {
     DocumentSnapshot data = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('children')
+        .doc('MikeMcHenry')
         .get();
-    firstName = data.get('first name');
-    lastName = data.get('last name');
-    id = FirebaseAuth.instance.currentUser!.uid;
-    children = List.from(data['children']);
-    debugPrint('i am working');
+    balance = data.get('balance');
+    chores = data.get('chore');
+    email = data.get('email');
+    expenses = data.get('expenses');
+    childFirstName = data.get('first name');
+    cid = data.get('id');
+    income = data.get('income');
+    childLastName = data.get('last name');
+    status = data.get('status');
   }
 
-  Future refreshPage() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const HomePage();
-    }));
-  }
-
-  Future addChild(
-    String childid,
-  ) async {
-    debugPrint('i am ' + childid);
-    await FirebaseFirestore.instance.collection('users').doc(id).update({
-      'children': FieldValue.arrayUnion([childid])
+  Future upadteChildInfo() async {
+    FirebaseFirestore.instance
+        .collection('children')
+        .doc('MikeMcHenry')
+        .update({
+      'expenses': expenses,
     });
   }
 
-  Future removeChild(
-    String childid,
-  ) async {
-    debugPrint('i am ' + childid);
-    await FirebaseFirestore.instance.collection('users').doc(id).update({
-      'children': FieldValue.arrayRemove([childid])
+  Future spendingMoney() async {
+    if (balance - expenses <= 100) {
+      money = ('YOU HAVE NO MUHNI, do not spend money that you do not have!');
+    } else if (balance - expenses <= 100) {
+      money =
+          ('You need to spend less MUHNI and Try to save more. You should ' +
+              chores);
+    } else if (balance - expenses >= 100 && balance - expenses <= 200) {
+      money =
+          ('You are saving up that MUHNI good job! If you want more you can ' +
+              chores);
+    } else {
+      money = ('You are a MUHNI saving machine AMAZING JOB!');
+    }
+  }
+
+  void _countdown() {
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        spendingMoney();
+        setChildInfo();
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    setInfo();
+    _countdown();
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 3, 166, 8),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(
-                icon: const Icon(
-                  Icons.account_circle_sharp,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
+              Text('Welcome ' + childFirstName),
               ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
@@ -86,20 +105,13 @@ class _ChildHomePageState extends State<ChildHomePage> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
                 child: const Text('Sign Out'),
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              )
             ],
           )),
       body: Container(
@@ -114,99 +126,83 @@ class _ChildHomePageState extends State<ChildHomePage> {
           ),
         ),
         child: SafeArea(
-          child: ListView.builder(
-            itemCount: children.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListTile(
-                  title: Text(children[index]),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const ChildSignUpScreen();
-                            }));
-                          },
-                          icon: const Icon(Icons.edit)),
-                      IconButton(
-                          onPressed: () {
-                            String temp = (children[index]);
-
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const ManagePage();
-                            }));
-                          },
-                          icon: const Icon(Icons.savings))
-                    ],
-                  ),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(width: 2),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Text('Balance (Total MUHNI): ' + balance.toString()),
+                ),
+                Text('Try to keep your Balance above your money spent (' +
+                    (expenses).toString() +
+                    ')'),
+                Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Text(
+                      'Income (How much MUHNI you get): ' + income.toString()),
+                ),
+                Text('To get this MUHNEY you have to, ' + chores),
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white,
+                  ),
+                  child: Text('MUHNEY Spent: ' + expenses.toString()),
+                ),
+                Text(money),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    controller: _expenseController,
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: 'Update Expenses (MUHNI spent)',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
                 ),
-              );
-            },
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () {
+                    expenses = expenses +
+                        double.tryParse(_expenseController.text.trim())!;
+                    upadteChildInfo();
+                  },
+                  child: const Text('Update', style: TextStyle(fontSize: 24)),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: Wrap(
-        direction: Axis.horizontal,
-        children: <Widget>[
-          Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: TextField(
-              controller: _firstNameController,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                hintText: 'Child Name',
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: FloatingActionButton(
-              onPressed: () {
-                addChild(_firstNameController.text.trim());
-                debugPrint('i am ' + children[0].toString());
-                setInfo();
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: FloatingActionButton(
-              onPressed: () {
-                removeChild(_firstNameController.text.trim());
-                debugPrint('i am ' + children[1].toString());
-                setInfo();
-              },
-              backgroundColor: Colors.deepPurpleAccent,
-              child: const Icon(Icons.delete),
-            ),
-          ),
-        ],
       ),
     );
   }

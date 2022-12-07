@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'child_homepage.dart';
+import 'forgot_page.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback onClickedSignUp;
@@ -51,6 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'MUHNI',
+              style: TextStyle(fontSize: 50),
+              textAlign: TextAlign.center,
+            ),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -93,26 +99,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 0, 20.0),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'Remember Me',
-                      style: TextStyle(fontSize: 15.0),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const forgotPage();
+                      }));
+                    },
+                    child: const Text(
+                      'Forgot Password',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
                     ),
-                    Checkbox(
-                      checkColor: Colors.white,
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                  ]),
+                  ),
+                ],
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(

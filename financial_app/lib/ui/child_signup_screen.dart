@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'main_page.dart';
 
 class ChildSignUpScreen extends StatefulWidget {
   const ChildSignUpScreen({
@@ -16,10 +17,10 @@ class ChildSignUpScreen extends StatefulWidget {
 }
 
 class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
-  late String firstName;
-  late String id;
-  late String lastName;
-  late String cid;
+  String firstName = '';
+  String id = '';
+  String lastName = '';
+  String cid = '';
 
   Future getInfo() async {}
 
@@ -29,13 +30,17 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
   final _passwordController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
 
   Future signUp() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      if (_passwordController.text.trim() ==
+          _confirmpasswordController.text.trim()) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
     }
@@ -106,17 +111,6 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const HomePage();
-                }));
-              },
-            ),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -203,13 +197,35 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
                 ),
               ),
             ),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: TextField(
+                controller: _confirmpasswordController,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'Confirm Password',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 20.0),
               ),
               onPressed: () {
                 signUp();
-                debugPrint('i am ' + cid);
+                FirebaseAuth.instance.signOut();
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const HomePage();
                 }));
@@ -220,23 +236,6 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
                   horizontal: 50.0,
                 ),
                 child: Text('Sign Up'),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 20.0),
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const HomePage();
-                }));
-              },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 50.0,
-                ),
-                child: Text('test'),
               ),
             ),
           ],

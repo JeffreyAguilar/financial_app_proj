@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/child_signup_screen.dart';
 import 'package:financial_app/global.dart' as globals;
-import 'home_page.dart' as home;
+import 'home_page.dart';
 
 class ManagePage extends StatefulWidget {
   const ManagePage({super.key});
@@ -13,11 +15,11 @@ class ManagePage extends StatefulWidget {
 }
 
 class _ManagePageState extends State<ManagePage> {
-  late String childName;
+  String childName = '';
   List<String> children = [];
-  late String firstName;
-  late String id;
-  late String lastName;
+  String firstName = '';
+  String id = '';
+  String lastName = '';
   final _firstNameController = TextEditingController();
 
   final _incomeController = TextEditingController();
@@ -34,24 +36,22 @@ class _ManagePageState extends State<ManagePage> {
     lastName = data.get('last name');
     id = FirebaseAuth.instance.currentUser!.uid;
     children = List.from(data['children']);
-    debugPrint('i am working adult');
   }
 
-  late double? income;
-  late double balance;
-  late double expenses;
-  late String chores;
-  late String email;
-  late String childFirstName;
-  late String childLastName;
-  late String cid;
-  late String status;
+  double? income = 0;
+  double? balance = 0;
+  double? expenses = 0;
+  String? chores = '';
+  String? email = '';
+  String? childFirstName = '';
+  String? childLastName = '';
+  String? cid = '';
+  String? status = '';
 
   Future setChildInfo() async {
-    DocumentSnapshot data = await FirebaseFirestore.instance
-        .collection('children')
-        .doc('jasonmchenry')
-        .get();
+    String temp = globals.temp + lastName;
+    DocumentSnapshot data =
+        await FirebaseFirestore.instance.collection('children').doc(temp).get();
     balance = data.get('balance');
     chores = data.get('chore');
     email = data.get('email');
@@ -62,27 +62,30 @@ class _ManagePageState extends State<ManagePage> {
     childLastName = data.get('last name');
     status = data.get('status');
 
-    debugPrint('i am working child');
   }
 
   Future upadteChildInfo() async {
-    FirebaseFirestore.instance
-        .collection('children')
-        .doc('jasonmchenry')
-        .update({
+    String temp = globals.temp + lastName;
+    FirebaseFirestore.instance.collection('children').doc(temp).update({
       'balance': balance,
       'chore': chores,
       'income': income,
     });
 
-    debugPrint('i am working child');
+  }
+
+  void _countdown() {
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        setInfo();
+        setChildInfo();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    setInfo();
-    setChildInfo();
-
+    _countdown();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 3, 166, 8),
@@ -179,10 +182,9 @@ class _ManagePageState extends State<ManagePage> {
                     chores = _choresController.text.trim();
                     income = double.tryParse(_incomeController.text.trim())!;
                     balance = double.tryParse(_balanceController.text.trim())!;
-                    upadteChildInfo();
+                    debugPrint('i am working ok ' + globals.temp + lastName);
 
-                    //debugPrint(
-                    //'i am ' + income.toString() + ' ' + balance.toString());
+                    upadteChildInfo();
                   },
                   child: const Text('Update', style: TextStyle(fontSize: 24)),
                 ),

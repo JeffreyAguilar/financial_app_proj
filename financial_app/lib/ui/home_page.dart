@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:financial_app/ui/child_signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/ui/account_page.dart';
@@ -16,9 +18,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> children = [];
-  late String firstName;
-  late String id;
-  late String lastName;
+  String firstName = '';
+  String id = '';
+  String lastName = '';
   final _firstNameController = TextEditingController();
 
   Future setInfo() async {
@@ -30,7 +32,6 @@ class _HomePageState extends State<HomePage> {
     lastName = data.get('last name');
     id = FirebaseAuth.instance.currentUser!.uid;
     children = List.from(data['children']);
-    debugPrint('i am working');
   }
 
   Future refreshPage() async {
@@ -42,7 +43,6 @@ class _HomePageState extends State<HomePage> {
   Future addChild(
     String childid,
   ) async {
-    debugPrint('i am ' + childid);
     await FirebaseFirestore.instance.collection('users').doc(id).update({
       'children': FieldValue.arrayUnion([childid])
     });
@@ -51,21 +51,30 @@ class _HomePageState extends State<HomePage> {
   Future removeChild(
     String childid,
   ) async {
-    debugPrint('i am ' + childid);
     await FirebaseFirestore.instance.collection('users').doc(id).update({
       'children': FieldValue.arrayRemove([childid])
     });
   }
 
+  void _countdown() {
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        setInfo();
+        globals.last = lastName;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    setInfo();
+    _countdown();
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 3, 166, 8),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              Text('Welcome ' + firstName),
               ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
@@ -120,7 +129,9 @@ class _HomePageState extends State<HomePage> {
                           icon: const Icon(Icons.edit)),
                       IconButton(
                           onPressed: () {
-                            String temp = (children[index]);
+                            globals.temp = children[index];
+                            globals.last = lastName;
+                            debugPrint('i am ' + globals.temp + globals.last);
 
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -170,7 +181,6 @@ class _HomePageState extends State<HomePage> {
             child: FloatingActionButton(
               onPressed: () {
                 addChild(_firstNameController.text.trim());
-                debugPrint('i am ' + children[0].toString());
                 setInfo();
               },
               child: const Icon(Icons.add),
@@ -181,7 +191,6 @@ class _HomePageState extends State<HomePage> {
             child: FloatingActionButton(
               onPressed: () {
                 removeChild(_firstNameController.text.trim());
-                debugPrint('i am ' + children[1].toString());
                 setInfo();
               },
               backgroundColor: Colors.deepPurpleAccent,
