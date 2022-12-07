@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/flutter.png'),
+          image: AssetImage('images/gradient.png'),
           fit: BoxFit.cover,
         ),
       ),

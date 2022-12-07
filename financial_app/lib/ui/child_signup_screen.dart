@@ -21,16 +21,6 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
   late String lastName;
   late String cid;
 
-  Future setInfo() async {
-    DocumentSnapshot data = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .get();
-    firstName = data.get('first name');
-    lastName = data.get('last name');
-    id = FirebaseAuth.instance.currentUser!.uid;
-  }
-
   Future getInfo() async {}
 
   bool isChecked = false;
@@ -56,18 +46,11 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
       _emailController.text.trim(),
       'child',
       cid = FirebaseAuth.instance.currentUser!.uid,
+      '',
+      0,
+      0,
+      0,
     );
-
-    addChild(cid);
-  }
-
-  Future addChild(
-    String childid,
-  ) async {
-    debugPrint('i am the' + id);
-    await FirebaseFirestore.instance.collection('users').doc(id).update({
-      'children': FieldValue.arrayUnion([childid])
-    });
   }
 
   Future addUserDetails(
@@ -76,16 +59,26 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
     String email,
     String child,
     String cid,
+    String chore,
+    double balance,
+    double income,
+    double expenses,
   ) async {
     await FirebaseFirestore.instance
         .collection('children')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .doc(
+          _firstNameController.text.trim() + _lastNameController.text.trim(),
+        )
         .set({
       'first name': firstName,
       'last name': lastName,
       'email': email,
       'status': child,
       'id': cid,
+      'chore': chore,
+      'balance': balance,
+      'income': income,
+      'expenses': expenses,
     });
   }
 
@@ -104,7 +97,7 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
         body: Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/flutter.png'),
+          image: AssetImage('images/gradient.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -113,6 +106,17 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const HomePage();
+                }));
+              },
+            ),
             Container(
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -223,7 +227,9 @@ class _ChildSignUpScreenState extends State<ChildSignUpScreen> {
                 textStyle: const TextStyle(fontSize: 20.0),
               ),
               onPressed: () {
-                setInfo();
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const HomePage();
+                }));
               },
               child: const Padding(
                 padding: EdgeInsets.symmetric(
