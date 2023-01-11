@@ -1,3 +1,3 @@
-# financial_app_proj
+# MUHNI (A Financial Mobile Application)
 
 The goal of our application, Muhni, was to keep our users in mind: children between the grades of six to twelve. We created an app that assists these children in managing their finances at an early age, providing them with financial knowledge and independence. With the help of their parents, they will gain financial responsibility by visualizing the money they earn, spend and save on a daily basis. Our app conveys this information in an interactive, friendly, and simple manner that makes it easy to learn about. Muhni was created through Flutter/Dart while being paired with the Firebase database system and can be accessed through iOS or Android.
